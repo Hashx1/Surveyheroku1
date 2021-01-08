@@ -2,7 +2,7 @@
   const app=express();
 
   app.get("/",(req,res)=>{
-    res.send("Konichiva");
+    res.send("Konichiva and screw you das");
   })
 
   const PORT=process.env.PORT|| 5000;
