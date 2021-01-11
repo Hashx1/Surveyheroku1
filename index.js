@@ -1,17 +1,24 @@
-  const express=require("express");
-  const app=express();
-  const passport=reqpire("passport");
-  const GoogleStrategy=require('Passport-google-oauth20').Strategy;
-  const keys=require('./Config/keys');
+const express = require('express');
+const mongoose = require('mongoose');
+const keys = require('./Config/keys');
+const passport = require('passport');
+require('./Model/User');
+require('./Services/passport');
+const cookieSession=require('cookie-session');
+mongoose.connect(keys.mongoURI);
 
-  passport.use(new GoogleStrategy({
-    clientID:keys.googleClientID,
-    clientSecret:keys.googleClientSecret,
-    callbackURL:'/auth/google/callback'
-  },(accesToken)=>{
-    console.log(accessToken);
-  }
-  ));
+const app = express();
 
-  const PORT=process.env.PORT|| 5000;
-  app.listen(PORT);
+app.use(
+    cookieSession({
+        maxAge:20*24*60*60*1000,
+        keys:[keys.cookieKey]
+    })
+)
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./routes/authRoutes')(app);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT);
