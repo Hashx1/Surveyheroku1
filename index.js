@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const keys = require('./Config/keys');
+const keys = require('./config/keys');
 const passport = require('passport');
-require('./Model/User');
+require('./model/User');
 require('./Services/passport');
 const cookieSession=require('cookie-session');
 mongoose.connect(keys.mongoURI);
